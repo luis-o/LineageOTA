@@ -106,6 +106,22 @@
                 Flight::json($ret);
             });
 
+	    // Delta updates call
+            Flight::route('/api/v1/build/get_full', function(){
+                $ret = array();
+
+                $full = Flight::builds()->getBuilds();
+                if ( $full === false ) {
+                    $ret['errors'] = array(
+                        'message' => 'Unable to find full'
+                    );
+                } else {
+                    $ret = array_merge($ret, $full);
+                }
+
+                Flight::json($ret);
+            });
+
             // LineageOS new API
             Flight::route('/api/v1/@deviceType(/@romType(/@incrementalVersion))', function ( $deviceType, $romType, $incrementalVersion ){
               Flight::builds()->setPostData(
