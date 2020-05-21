@@ -1,0 +1,1 @@
+docker -D run --restart=always -d -p 80:80 -v "/home/luis/builds:/var/www/html/builds/full" $@
