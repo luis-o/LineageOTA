@@ -76,14 +76,15 @@
             // Try to load the build.prop from two possible paths:
             // - builds/CURRENT_ZIP_FILE.zip/system/build.prop
             // - builds/CURRENT_ZIP_FILE.zip.prop ( which must exist )
-            $this->buildProp = explode( "\n", @file_get_contents('zip://'.$this->filePath.'#system/build.prop') ?? @file_get_contents($filePath.'.prop'));
+            $this->buildProp = explode( "\n", @file_get_contents('zip://'.$this->filePath.'#config/build.prop') ?? @file_get_contents($filePath.'.prop'));
+
             // Try to fetch build.prop values. In some cases, we can provide a fallback, in other a null value will be given
             $this->timestamp = intval( $this->getBuildPropValue( 'ro.build.date.utc' ) ?? filemtime($this->filePath) );
             $this->incremental = $this->getBuildPropValue( 'ro.build.version.incremental' ) ?? '';
             $this->apiLevel = $this->getBuildPropValue( 'ro.build.version.sdk' ) ?? '';
-            $this->model = $this->getBuildPropValue( 'ro.lineage.device' ) ?? $this->getBuildPropValue( 'ro.cm.device' ) ?? ( $tokens[1] == 'cm' ? $tokens[6] : $tokens[5] );
-            //$this->version = $tokens[2];
-            $this->version = $this->getBuildPropValue( 'ro.lineage.build.version' ) ?? '';
+            $this->model = $this->getBuildPropValue( 'ro.swordhealth.device' ) ?? '';
+          //  $this->version = $tokens[2];
+            $this->version = $this->getBuildPropValue( 'ro.swordhealth.version' ) ?? '';
             $this->uid = hash( 'sha256', $this->timestamp.$this->model.$this->apiLevel, false );
             $this->size = filesize($this->filePath);
 
@@ -102,7 +103,7 @@
          * @return boolean True if valid, False if not.
          */
     	public function isValid($params){
-		//return true;
+	    return true;
             $ret = false;
 
             if ( $params['device'] == $this->model ) {
@@ -273,7 +274,7 @@
             $token = strtolower( $token );
             if ( $token > '' ) {
                 $ret = $token;
-                if ( $token /home/luis/builds== 'experimental' && ( $type == 'cm' || version_compare ( $version, '14.1', '<' ) ) ) $ret = 'snapshot';
+                if ( $token == 'experimental' && ( $type == 'cm' || version_compare ( $version, '14.1', '<' ) ) ) $ret = 'snapshot';
                 if ( $token == 'unofficial' && ( $type == 'cm' || version_compare ( $version, '14.1', '<' ) ) ) $ret = 'nightly';
             }
 

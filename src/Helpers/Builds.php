@@ -30,14 +30,13 @@
     class Builds {
 
         // This will contain the build list based on the current request
-    	private $builds = array();
-
+        private $builds = array();
         private $postData = array();
 
         /**
          * Constructor of the Builds class.
          */
-    	public function __construct() {
+        public function __construct() {
             // Set required paths for properly builds Urls later
             Flight::cfg()->set( 'buildsPath', Flight::cfg()->get('basePath') . '/builds/full' );
             Flight::cfg()->set( 'deltasPath', Flight::cfg()->get('basePath') . '/builds/delta' );
@@ -46,15 +45,15 @@
             $this->postData = Flight::request()->data;
 
             // Internal Initialization routines
-    		$this->getBuilds();
-    	}
+                $this->getBuilds();
+        }
 
         /**
          * Return a valid response list of builds available based on the current request
          * @return array An array preformatted with builds
          */
-    	public function get() {
-    		$ret = array();
+        public function get() {
+                $ret = array();
 
             foreach ( $this->builds as $build ) {
                 array_push( $ret, array(
@@ -77,7 +76,7 @@
             }
 
             return $ret;
-    	}
+        }
 
         /**
          * Set a custom set of POST data. Useful to hack the flow in case the data doesn't come within the body of the HTTP request
@@ -94,7 +93,7 @@
          * Return a valid response of the delta build (if available) based on the current request
          * @return array An array preformatted with the delta build
          */
-    	public function getDelta() {
+        public function getDelta() {
             $ret = false;
 
             $source = $this->postData['source_incremental'];
@@ -118,12 +117,11 @@
                 }
             }
 
-    		return $ret;
-    	}
+                return $ret;
+        }
 
         /* Utility / Internal */
-
-    	private function getBuilds() {
+        private function getBuilds() {
             // Get physical paths of where the files resides
             $path = Flight::cfg()->get('realBasePath') . '/builds/full';
             // Get subdirs
@@ -159,5 +157,5 @@
                     }
                 }
             }
-    	}
+        }
     }
